@@ -5,6 +5,7 @@ ext.versions = [
         googleServices     : '3.2.0',
         appcompat          : '1.0.0-rc01',
         constraintLayout   : '1.1.2',
+        firebaseCore       : '16.0.1',
         firebaseStorage    : '16.0.1',
         rxjava             : '2.1.10',
         rxbinding          : '2.1.1',

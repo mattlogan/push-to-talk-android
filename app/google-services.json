@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "168880017712",
+    "firebase_url": "https://push-to-talk-ac292.firebaseio.com",
+    "project_id": "push-to-talk-ac292",
+    "storage_bucket": "push-to-talk-ac292.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168880017712:android:1ac1d7a80902a612",
+        "android_client_info": {
+          "package_name": "me.mattlogan.pushtotalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168880017712-g7h725rc5kotsq2esmich16f82gclkkl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ3N25BrHulZRc4rE8eRaAVot-gPxnzXw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
