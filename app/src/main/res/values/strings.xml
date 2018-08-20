@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Push to Talk</string>
+
+    <string name="send_a_message">Send a message</string>
+    <string name="push_to_talk">Push to talk</string>
+
 </resources>
