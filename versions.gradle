@@ -12,7 +12,6 @@ ext.versions = [
         rxjava             : '2.1.10',
         rxbinding          : '2.1.1',
         rxrelay            : '2.0.0',
-        rxandroid          : '2.0.2',
         dagger             : '2.15',
         junit              : '4.12',
         mockito            : '2.21.0',
