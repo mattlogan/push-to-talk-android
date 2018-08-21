@@ -34,4 +34,6 @@ dependencies {
     implementation project(':uicommon')
 
     testImplementation "junit:junit:$versions.junit"
+    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "com.nhaarman:mockito-kotlin:$versions.mockitoKotlin"
 }
