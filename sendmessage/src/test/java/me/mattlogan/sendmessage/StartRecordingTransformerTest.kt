@@ -10,7 +10,7 @@ import org.junit.Test
 class StartRecordingTransformerTest {
 
   @Test
-  fun startRecordingEventStartsRecordingAndShowsRecordingStatus() {
+  fun whenAudioRecorderSucceeds_showsRecordingStatus() {
     val audioRecorder = mock<AudioRecorder>()
     val transformer = StartRecordingTransformer(audioRecorder)
     val upstream = Observable.just(StartRecordingEvent(filePath = "test_path"))
@@ -20,7 +20,7 @@ class StartRecordingTransformerTest {
   }
 
   @Test
-  fun startRecordingEventStartsRecordingAndShowsError() {
+  fun whenAudioRecorderFails_showsError() {
     val audioRecorder = mock<AudioRecorder>()
     whenever(audioRecorder.startRecording("test_path")).thenThrow(IllegalStateException())
     val transformer = StartRecordingTransformer(audioRecorder)
