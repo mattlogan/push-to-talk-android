@@ -68,8 +68,6 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
       return@setOnTouchListener false
     }
 
-
-
     // Let's just assume the user grants permission. If they deny, we'll show an error
     // when they try to record.
     requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), recordAudioRequestCode)
