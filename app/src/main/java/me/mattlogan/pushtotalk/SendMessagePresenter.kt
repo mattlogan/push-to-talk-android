@@ -3,8 +3,10 @@ package me.mattlogan.pushtotalk
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class SendMessagePresenter {
+class SendMessagePresenter @Inject constructor(private val startRecordingTransformer: StartRecordingTransformer,
+                                               private val stopRecordingTransformer: StopRecordingTransformer) {
 
   private val relay = PublishRelay.create<SendMessageUpdate>()
   private val disposables = CompositeDisposable()
@@ -12,12 +14,17 @@ class SendMessagePresenter {
   fun updates(): Observable<SendMessageUpdate> = relay
 
   fun attach(target: Target) {
-    
+    disposables.addAll(
+        target.downTouches()
+            .compose(startRecordingTransformer)
+            .subscribe(relay::accept),
+        target.upTouches()
+            .compose(stopRecordingTransformer)
+            .subscribe(relay::accept)
+    )
   }
 
-  fun detach() {
-
-  }
+  fun detach() = disposables.dispose()
 
   interface Target {
     fun downTouches(): Observable<Unit>

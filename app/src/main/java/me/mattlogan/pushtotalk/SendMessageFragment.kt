@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import javax.inject.Inject
 
 class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
 
@@ -21,9 +22,9 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
   private val downTouchesRelay = PublishRelay.create<Unit>()
   private val upTouchesRelay = PublishRelay.create<Unit>()
 
-  private lateinit var disposable: Disposable
+  @Inject lateinit var presenter: SendMessagePresenter
 
-  private val presenter = SendMessagePresenter()
+  private lateinit var disposable: Disposable
 
   // Lint complains about adding a touch listener without manually calling performClick() for
   // accessibility reasons! We should make sure this works with accessibility devices.
@@ -79,6 +80,7 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
 
   override fun onDestroyView() {
     super.onDestroyView()
+    presenter.detach()
     disposable.dispose()
   }
 
