@@ -3,13 +3,17 @@ package me.mattlogan.sendmessage
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toolbar
+import androidx.core.text.util.LinkifyCompat
 import androidx.fragment.app.Fragment
 import com.jakewharton.rxrelay2.PublishRelay
 import dagger.android.support.AndroidSupportInjection
@@ -22,6 +26,7 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
 
   private lateinit var toolbar: Toolbar
   private lateinit var pushToTalkButton: Button
+  private lateinit var statusText: TextView
 
   private val startRecordingRelay = PublishRelay.create<StartRecordingEvent>()
   private val stopRecordingRelay = PublishRelay.create<StopRecordingEvent>()
@@ -45,6 +50,7 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
 
     toolbar = view.findViewById(R.id.send_message_toolbar)
     pushToTalkButton = view.findViewById(R.id.send_message_push_to_talk_button)
+    statusText = view.findViewById(R.id.send_message_status_text)
 
     toolbar.title = getString(R.string.send_a_message)
     requireActivity().setActionBar(toolbar)
@@ -63,6 +69,8 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
       return@setOnTouchListener false
     }
 
+
+
     // Let's just assume the user grants permission. If they deny, we'll show an error
     // when they try to record.
     requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), recordAudioRequestCode)
@@ -74,15 +82,20 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
           when (event) {
             is SendMessageUpdate.ShowError -> {
               Log.d("debug_log", "show error")
+              statusText.text = getString(R.string.generic_error)
             }
             is SendMessageUpdate.ShowRecording -> {
               Log.d("debug_log", "show recording")
+              statusText.text = getString(R.string.recording)
             }
             is SendMessageUpdate.ShowSending -> {
               Log.d("debug_log", "show sending")
+              statusText.text = getString(R.string.sending)
             }
             is SendMessageUpdate.ShowSent -> {
               Log.d("debug_log", "show sent, url: ${event.fileUrl}")
+              statusText.text = getString(R.string.message_sent, event.fileUrl)
+              LinkifyCompat.addLinks(statusText, Linkify.ALL)
             }
           }
         }

@@ -4,4 +4,10 @@
     <string name="send_a_message">Send a message</string>
     <string name="push_to_talk">Push to talk</string>
 
+    <string name="ready_to_record">Ready to record</string>
+    <string name="recording">Recording…</string>
+    <string name="sending">Sending…</string>
+    <string name="message_sent">Message sent!\n\n%s</string>
+    <string name="generic_error">There was an error!</string>
+
 </resources>
