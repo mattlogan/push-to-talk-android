@@ -10,13 +10,13 @@ class StopRecordingTransformer @Inject constructor(private val audioRecorder: Au
   : ObservableTransformer<Unit, SendMessageUpdate> {
 
   override fun apply(upstream: Observable<Unit>): ObservableSource<SendMessageUpdate> {
-    val showSending = upstream
+    val stopRecording = upstream
         .doOnNext { audioRecorder.stopRecording() }
         .map { SendMessageUpdate.ShowSending }
 
     val sendAudio = upstream
         .map { SendMessageUpdate.ShowSent }
 
-    return Observable.merge(showSending, sendAudio)
+    return Observable.merge(stopRecording, sendAudio)
   }
 }

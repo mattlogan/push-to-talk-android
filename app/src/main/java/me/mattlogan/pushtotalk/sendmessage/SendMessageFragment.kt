@@ -2,6 +2,7 @@ package me.mattlogan.pushtotalk.sendmessage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -68,13 +69,16 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
         .subscribe { event ->
           when (event) {
             is SendMessageUpdate.ShowError -> {
-
+              Log.d("debug_log", "show error")
+            }
+            is SendMessageUpdate.ShowRecording -> {
+              Log.d("debug_log", "show recording")
             }
             is SendMessageUpdate.ShowSending -> {
-
+              Log.d("debug_log", "show sending")
             }
             is SendMessageUpdate.ShowSent -> {
-
+              Log.d("debug_log", "show sent")
             }
           }
         }
