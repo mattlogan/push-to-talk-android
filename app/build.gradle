@@ -1,12 +1,15 @@
 apply plugin: 'com.android.application'
+
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion versions.compileSdkVersion
+
     defaultConfig {
         applicationId "me.mattlogan.pushtotalk"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -27,6 +30,13 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:$versions.firebaseCore"
     implementation "com.google.firebase:firebase-storage:$versions.firebaseStorage"
+
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+    implementation "com.jakewharton.rxbinding2:rxbinding:$versions.rxbinding"
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$versions.rxbinding"
+    implementation "com.jakewharton.rxrelay2:rxrelay:$versions.rxrelay"
+
+    implementation project(':audio')
 
     testImplementation "junit:junit:$versions.junit"
 
