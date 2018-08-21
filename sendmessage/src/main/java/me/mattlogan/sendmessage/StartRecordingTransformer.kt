@@ -7,11 +7,12 @@ import me.mattlogan.pushtotalk.audio.AudioRecorder
 import javax.inject.Inject
 
 class StartRecordingTransformer @Inject constructor(private val audioRecorder: AudioRecorder)
-  : ObservableTransformer<Unit, SendMessageUpdate> {
+  : ObservableTransformer<StartRecordingEvent, SendMessageUpdate> {
 
-  override fun apply(upstream: Observable<Unit>): ObservableSource<SendMessageUpdate> {
+  override fun apply(upstream: Observable<StartRecordingEvent>): ObservableSource<SendMessageUpdate> {
     return upstream
-        .doOnNext { audioRecorder.startRecording() }
-        .map { SendMessageUpdate.ShowRecording }
+        .map { event -> audioRecorder.startRecording(event.filePath) }
+        .map { SendMessageUpdate.ShowRecording as SendMessageUpdate }
+        .onErrorReturn { SendMessageUpdate.ShowError }
   }
 }

@@ -14,6 +14,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import java.io.File
 import javax.inject.Inject
 
 class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
@@ -21,8 +22,8 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
   private lateinit var toolbar: Toolbar
   private lateinit var pushToTalkButton: Button
 
-  private val downTouchesRelay = PublishRelay.create<Unit>()
-  private val upTouchesRelay = PublishRelay.create<Unit>()
+  private val startRecordingRelay = PublishRelay.create<StartRecordingEvent>()
+  private val stopRecordingRelay = PublishRelay.create<StopRecordingEvent>()
 
   @Inject lateinit var presenter: SendMessagePresenter
 
@@ -48,13 +49,10 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
     pushToTalkButton.setOnTouchListener { _, motionEvent ->
       when (motionEvent.actionMasked) {
         MotionEvent.ACTION_DOWN -> {
-          downTouchesRelay.accept(Unit)
+          startRecordingRelay.accept(StartRecordingEvent(filePath = getFile().absolutePath))
         }
         MotionEvent.ACTION_UP -> {
-          upTouchesRelay.accept(Unit)
-        }
-        else -> {
-          // Ignore
+          stopRecordingRelay.accept(StopRecordingEvent)
         }
       }
 
@@ -91,7 +89,12 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
     disposable.dispose()
   }
 
-  override fun downTouches(): Observable<Unit> = downTouchesRelay
+  override fun startRecordingEvents(): Observable<StartRecordingEvent> = startRecordingRelay
 
-  override fun upTouches(): Observable<Unit> = upTouchesRelay
+  override fun stopRecordingEvents(): Observable<StopRecordingEvent> = stopRecordingRelay
+
+  private fun getFile(): File {
+    val filename = "audio-${System.currentTimeMillis()}"
+    return File.createTempFile(filename, ".3gp", requireContext().cacheDir)
+  }
 }

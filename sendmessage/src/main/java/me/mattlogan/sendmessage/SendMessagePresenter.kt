@@ -15,10 +15,10 @@ class SendMessagePresenter @Inject constructor(private val startRecordingTransfo
 
   fun attach(target: Target) {
     disposables.addAll(
-        target.downTouches()
+        target.startRecordingEvents()
             .compose(startRecordingTransformer)
             .subscribe(relay::accept),
-        target.upTouches()
+        target.stopRecordingEvents()
             .compose(stopRecordingTransformer)
             .subscribe(relay::accept)
     )
@@ -27,7 +27,7 @@ class SendMessagePresenter @Inject constructor(private val startRecordingTransfo
   fun detach() = disposables.dispose()
 
   interface Target {
-    fun downTouches(): Observable<Unit>
-    fun upTouches(): Observable<Unit>
+    fun startRecordingEvents(): Observable<StartRecordingEvent>
+    fun stopRecordingEvents(): Observable<StopRecordingEvent>
   }
 }

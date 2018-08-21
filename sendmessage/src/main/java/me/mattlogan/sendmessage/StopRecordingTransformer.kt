@@ -7,16 +7,18 @@ import me.mattlogan.pushtotalk.audio.AudioRecorder
 import javax.inject.Inject
 
 class StopRecordingTransformer @Inject constructor(private val audioRecorder: AudioRecorder)
-  : ObservableTransformer<Unit, SendMessageUpdate> {
+  : ObservableTransformer<StopRecordingEvent, SendMessageUpdate> {
 
-  override fun apply(upstream: Observable<Unit>): ObservableSource<SendMessageUpdate> {
-    val stopRecording = upstream
-        .doOnNext { audioRecorder.stopRecording() }
+  override fun apply(upstream: Observable<StopRecordingEvent>): ObservableSource<SendMessageUpdate> {
+    val showSending = upstream
         .map { SendMessageUpdate.ShowSending }
 
     val sendAudio = upstream
-        .map { SendMessageUpdate.ShowSent }
+        .map { audioRecorder.stopRecording() }
+        .flatMap { filePath -> Observable.just(filePath) }
+        .map { SendMessageUpdate.ShowSent as SendMessageUpdate }
+        .onErrorReturn { SendMessageUpdate.ShowError }
 
-    return Observable.merge(stopRecording, sendAudio)
+    return Observable.merge(showSending, sendAudio)
   }
 }
