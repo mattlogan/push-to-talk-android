@@ -1,1 +1,1 @@
-include ':app', ':audio', ':upload'
+include ':app', ':audio', ':upload', ':sendmessage', ':uicommon'

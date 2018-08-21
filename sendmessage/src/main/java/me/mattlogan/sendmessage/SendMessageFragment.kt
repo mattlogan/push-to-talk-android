@@ -1,4 +1,4 @@
-package me.mattlogan.pushtotalk.sendmessage
+package me.mattlogan.sendmessage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -14,7 +14,6 @@ import com.jakewharton.rxrelay2.PublishRelay
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import me.mattlogan.pushtotalk.R
 import javax.inject.Inject
 
 class SendMessageFragment : Fragment(), SendMessagePresenter.Target {

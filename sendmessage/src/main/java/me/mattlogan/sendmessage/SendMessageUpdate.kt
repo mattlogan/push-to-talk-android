@@ -1,4 +1,4 @@
-package me.mattlogan.pushtotalk.sendmessage
+package me.mattlogan.sendmessage
 
 // Represents all the possible UI update states
 sealed class SendMessageUpdate {
