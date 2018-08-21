@@ -110,6 +110,8 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
 
   override fun stopRecordingEvents(): Observable<StopRecordingEvent> = stopRecordingRelay
 
+  // Ideally we'd get this stuff out of the UI layer but it requires a Context so it's a bit more
+  // convenient to do it here. We could refactor this method into a separate class if we wanted.
   private fun getFile(): File {
     val filename = "audio-${System.currentTimeMillis()}"
     return File.createTempFile(filename, ".amr", requireContext().cacheDir)
