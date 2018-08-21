@@ -17,9 +17,6 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
 
-    implementation "com.google.firebase:firebase-core:$versions.firebaseCore"
-    implementation "com.google.firebase:firebase-storage:$versions.firebaseStorage"
-
     implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
     implementation "com.jakewharton.rxbinding2:rxbinding:$versions.rxbinding"
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$versions.rxbinding"
@@ -33,10 +30,8 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 
     implementation project(':audio')
+    implementation project(':upload')
     implementation project(':uicommon')
 
     testImplementation "junit:junit:$versions.junit"
-
-    androidTestImplementation "androidx.test:runner:$versions.androidTestRunner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
 }

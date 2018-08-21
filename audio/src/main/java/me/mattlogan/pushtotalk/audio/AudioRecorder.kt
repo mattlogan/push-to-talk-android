@@ -23,14 +23,17 @@ class RealAudioRecorder @Inject constructor() : AudioRecorder {
   override fun startRecording(path: String) {
     filePath = path
 
-    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-    // 3GPP is a standard audio file format
-    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-    // Adaptive Multi-Rate audio codec is optimized for speech
-    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-    mediaRecorder.setOutputFile(path)
-    mediaRecorder.prepare()
-    mediaRecorder.start()
+    mediaRecorder.apply {
+      setAudioSource(MediaRecorder.AudioSource.MIC)
+      // Adaptive Multi-Rate (AMR) audio codec is optimized for speech
+      setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
+      setAudioSamplingRate(44_100)
+      setAudioEncodingBitRate(96_000)
+      setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+      setOutputFile(path)
+      prepare()
+      start()
+    }
   }
 
   override fun stopRecording(): String {

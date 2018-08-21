@@ -5,5 +5,5 @@ sealed class SendMessageUpdate {
   object ShowError : SendMessageUpdate()
   object ShowRecording : SendMessageUpdate()
   object ShowSending : SendMessageUpdate()
-  object ShowSent : SendMessageUpdate()
+  data class ShowSent(val fileUrl: String) : SendMessageUpdate()
 }

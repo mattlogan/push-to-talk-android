@@ -2,7 +2,6 @@ package me.mattlogan.sendmessage
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -64,6 +63,8 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
       return@setOnTouchListener false
     }
 
+    // Let's just assume the user grants permission. If they deny, we'll show an error
+    // when they try to record.
     requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), recordAudioRequestCode)
 
     presenter.attach(this)
@@ -81,7 +82,7 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
               Log.d("debug_log", "show sending")
             }
             is SendMessageUpdate.ShowSent -> {
-              Log.d("debug_log", "show sent")
+              Log.d("debug_log", "show sent, url: ${event.fileUrl}")
             }
           }
         }
@@ -101,6 +102,6 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
 
   private fun getFile(): File {
     val filename = "audio-${System.currentTimeMillis()}"
-    return File.createTempFile(filename, ".3gp", requireContext().cacheDir)
+    return File.createTempFile(filename, ".amr", requireContext().cacheDir)
   }
 }
