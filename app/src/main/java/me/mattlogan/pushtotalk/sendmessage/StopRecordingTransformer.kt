@@ -1,4 +1,4 @@
-package me.mattlogan.pushtotalk
+package me.mattlogan.pushtotalk.sendmessage
 
 import io.reactivex.Observable
 import io.reactivex.ObservableSource

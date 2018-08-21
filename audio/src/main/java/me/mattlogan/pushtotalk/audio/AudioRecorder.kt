@@ -12,7 +12,7 @@ interface AudioRecorder {
 class RealAudioRecorder @Inject constructor() : AudioRecorder {
 
   init {
-    
+
   }
 
   override fun startRecording() {

@@ -1,4 +1,4 @@
-package me.mattlogan.pushtotalk
+package me.mattlogan.pushtotalk.sendmessage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,8 +10,10 @@ import android.widget.Button
 import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.jakewharton.rxrelay2.PublishRelay
+import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import me.mattlogan.pushtotalk.R
 import javax.inject.Inject
 
 class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
@@ -32,6 +34,8 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
   override fun onCreateView(inflater: LayoutInflater,
                             container: ViewGroup?,
                             savedInstanceState: Bundle?): View {
+
+    AndroidSupportInjection.inject(this)
 
     val view = inflater.inflate(R.layout.send_message_fragment, container, false)
 

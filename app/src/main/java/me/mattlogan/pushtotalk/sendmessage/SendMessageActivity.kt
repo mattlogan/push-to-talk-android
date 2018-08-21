@@ -1,7 +1,8 @@
-package me.mattlogan.pushtotalk
+package me.mattlogan.pushtotalk.sendmessage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import me.mattlogan.pushtotalk.R
 
 class SendMessageActivity : AppCompatActivity() {
 
