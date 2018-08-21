@@ -1,6 +1,8 @@
 package me.mattlogan.sendmessage
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +30,8 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
   @Inject lateinit var presenter: SendMessagePresenter
 
   private lateinit var disposable: Disposable
+
+  private val recordAudioRequestCode = 1278
 
   // Lint complains about adding a touch listener without manually calling performClick() for
   // accessibility reasons! We should make sure this works with accessibility devices.
@@ -59,6 +63,8 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
       // Even though we're "handling" touches, we still want the button to show touches!
       return@setOnTouchListener false
     }
+
+    requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), recordAudioRequestCode)
 
     presenter.attach(this)
 
