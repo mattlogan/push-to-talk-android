@@ -1,7 +1,8 @@
 package me.mattlogan.sendmessage
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -10,19 +11,20 @@ class SendMessageViewModel @Inject constructor(private val startRecordingTransfo
                                                private val stopRecordingTransformer: StopRecordingTransformer)
   : ViewModel() {
 
-  private val relay = PublishRelay.create<SendMessageUpdate>()
   private val disposables = CompositeDisposable()
 
-  fun updates(): Observable<SendMessageUpdate> = relay
+  private val liveData = MutableLiveData<SendMessageUpdate>()
+
+  fun liveData(): LiveData<SendMessageUpdate> = liveData
 
   fun attach(target: Target) {
     disposables.addAll(
         target.startRecordingEvents()
             .compose(startRecordingTransformer)
-            .subscribe(relay::accept),
+            .subscribe(liveData::postValue),
         target.stopRecordingEvents()
             .compose(stopRecordingTransformer)
-            .subscribe(relay::accept)
+            .subscribe(liveData::postValue)
     )
   }
 

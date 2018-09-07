@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toolbar
 import androidx.core.text.util.LinkifyCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxrelay2.PublishRelay
 import dagger.android.support.AndroidSupportInjection
@@ -32,8 +33,6 @@ class SendMessageFragment : Fragment(), SendMessageViewModel.Target {
   private val stopRecordingRelay = PublishRelay.create<StopRecordingEvent>()
 
   @Inject lateinit var viewModelFactory: SendMessageViewModelFactory
-
-  private lateinit var disposable: Disposable
 
   private val recordAudioRequestCode = 1278
 
@@ -77,35 +76,29 @@ class SendMessageFragment : Fragment(), SendMessageViewModel.Target {
 
     viewModel.attach(this)
 
-    disposable = viewModel.updates()
-        .subscribe { event ->
-          when (event) {
-            is SendMessageUpdate.ShowError -> {
-              Log.d("debug_log", "show error")
-              statusText.text = getString(R.string.generic_error)
-            }
-            is SendMessageUpdate.ShowRecording -> {
-              Log.d("debug_log", "show recording")
-              statusText.text = getString(R.string.recording)
-            }
-            is SendMessageUpdate.ShowSending -> {
-              Log.d("debug_log", "show sending")
-              statusText.text = getString(R.string.sending)
-            }
-            is SendMessageUpdate.ShowSent -> {
-              Log.d("debug_log", "show sent, url: ${event.fileUrl}")
-              statusText.text = getString(R.string.message_sent, event.fileUrl)
-              LinkifyCompat.addLinks(statusText, Linkify.ALL)
-            }
-          }
+    viewModel.liveData().observe(this, Observer<SendMessageUpdate> { event ->
+      when (event) {
+        is SendMessageUpdate.ShowError -> {
+          Log.d("debug_log", "show error")
+          statusText.text = getString(R.string.generic_error)
         }
+        is SendMessageUpdate.ShowRecording -> {
+          Log.d("debug_log", "show recording")
+          statusText.text = getString(R.string.recording)
+        }
+        is SendMessageUpdate.ShowSending -> {
+          Log.d("debug_log", "show sending")
+          statusText.text = getString(R.string.sending)
+        }
+        is SendMessageUpdate.ShowSent -> {
+          Log.d("debug_log", "show sent, url: ${event.fileUrl}")
+          statusText.text = getString(R.string.message_sent, event.fileUrl)
+          LinkifyCompat.addLinks(statusText, Linkify.ALL)
+        }
+      }
+    })
 
     return view
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    disposable.dispose()
   }
 
   override fun startRecordingEvents(): Observable<StartRecordingEvent> = startRecordingRelay
