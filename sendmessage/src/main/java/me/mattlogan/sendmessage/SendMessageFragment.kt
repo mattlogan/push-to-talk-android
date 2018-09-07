@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toolbar
 import androidx.core.text.util.LinkifyCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxrelay2.PublishRelay
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
@@ -21,7 +22,7 @@ import io.reactivex.disposables.Disposable
 import java.io.File
 import javax.inject.Inject
 
-class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
+class SendMessageFragment : Fragment(), SendMessageViewModel.Target {
 
   private lateinit var toolbar: Toolbar
   private lateinit var pushToTalkButton: Button
@@ -30,7 +31,7 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
   private val startRecordingRelay = PublishRelay.create<StartRecordingEvent>()
   private val stopRecordingRelay = PublishRelay.create<StopRecordingEvent>()
 
-  @Inject lateinit var presenter: SendMessagePresenter
+  @Inject lateinit var viewModelFactory: SendMessageViewModelFactory
 
   private lateinit var disposable: Disposable
 
@@ -44,6 +45,8 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
                             savedInstanceState: Bundle?): View {
 
     AndroidSupportInjection.inject(this)
+
+    val viewModel = ViewModelProviders.of(this, viewModelFactory)[SendMessageViewModel::class.java]
 
     val view = inflater.inflate(R.layout.send_message_fragment, container, false)
 
@@ -72,9 +75,9 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
     // when they try to record.
     requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), recordAudioRequestCode)
 
-    presenter.attach(this)
+    viewModel.attach(this)
 
-    disposable = presenter.updates()
+    disposable = viewModel.updates()
         .subscribe { event ->
           when (event) {
             is SendMessageUpdate.ShowError -> {
@@ -102,7 +105,6 @@ class SendMessageFragment : Fragment(), SendMessagePresenter.Target {
 
   override fun onDestroyView() {
     super.onDestroyView()
-    presenter.detach()
     disposable.dispose()
   }
 

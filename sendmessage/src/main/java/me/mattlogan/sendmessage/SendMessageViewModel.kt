@@ -1,12 +1,14 @@
 package me.mattlogan.sendmessage
 
+import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class SendMessagePresenter @Inject constructor(private val startRecordingTransformer: StartRecordingTransformer,
-                                               private val stopRecordingTransformer: StopRecordingTransformer) {
+class SendMessageViewModel @Inject constructor(private val startRecordingTransformer: StartRecordingTransformer,
+                                               private val stopRecordingTransformer: StopRecordingTransformer)
+  : ViewModel() {
 
   private val relay = PublishRelay.create<SendMessageUpdate>()
   private val disposables = CompositeDisposable()
@@ -24,7 +26,10 @@ class SendMessagePresenter @Inject constructor(private val startRecordingTransfo
     )
   }
 
-  fun detach() = disposables.dispose()
+  override fun onCleared() {
+    super.onCleared()
+    disposables.dispose()
+  }
 
   interface Target {
     fun startRecordingEvents(): Observable<StartRecordingEvent>

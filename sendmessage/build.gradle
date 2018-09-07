@@ -29,6 +29,9 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$versions.dagger"
     kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 
+    implementation "android.arch.lifecycle:viewmodel:$versions.viewmodel"
+    implementation "android.arch.lifecycle:extensions:$versions.viewmodel"
+
     implementation project(':audio')
     implementation project(':upload')
     implementation project(':uicommon')
