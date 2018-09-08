@@ -16,5 +16,5 @@ ext.versions = [
         junit              : '4.12',
         mockito            : '2.21.0',
         mockitoKotlin      : '1.6.0',
-        viewmodel          : 'lifecycle'
+        viewmodel          : '1.1.1'
 ]

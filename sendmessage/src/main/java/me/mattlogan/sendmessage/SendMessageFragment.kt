@@ -16,21 +16,15 @@ import androidx.core.text.util.LinkifyCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.jakewharton.rxrelay2.PublishRelay
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
 import java.io.File
 import javax.inject.Inject
 
-class SendMessageFragment : Fragment(), SendMessageViewModel.Target {
+class SendMessageFragment : Fragment() {
 
   private lateinit var toolbar: Toolbar
   private lateinit var pushToTalkButton: Button
   private lateinit var statusText: TextView
-
-  private val startRecordingRelay = PublishRelay.create<StartRecordingEvent>()
-  private val stopRecordingRelay = PublishRelay.create<StopRecordingEvent>()
 
   @Inject lateinit var viewModelFactory: SendMessageViewModelFactory
 
@@ -59,10 +53,10 @@ class SendMessageFragment : Fragment(), SendMessageViewModel.Target {
     pushToTalkButton.setOnTouchListener { _, motionEvent ->
       when (motionEvent.actionMasked) {
         MotionEvent.ACTION_DOWN -> {
-          startRecordingRelay.accept(StartRecordingEvent(filePath = getFile().absolutePath))
+          viewModel.uiEvents.startRecording.accept(StartRecordingEvent(filePath = getFile().absolutePath))
         }
         MotionEvent.ACTION_UP -> {
-          stopRecordingRelay.accept(StopRecordingEvent)
+          viewModel.uiEvents.stopRecording.accept(StopRecordingEvent)
         }
       }
 
@@ -74,9 +68,7 @@ class SendMessageFragment : Fragment(), SendMessageViewModel.Target {
     // when they try to record.
     requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), recordAudioRequestCode)
 
-    viewModel.attach(this)
-
-    viewModel.liveData().observe(this, Observer<SendMessageUpdate> { event ->
+    viewModel.state.observe(this, Observer<SendMessageUpdate> { event ->
       when (event) {
         is SendMessageUpdate.ShowError -> {
           Log.d("debug_log", "show error")
@@ -100,10 +92,6 @@ class SendMessageFragment : Fragment(), SendMessageViewModel.Target {
 
     return view
   }
-
-  override fun startRecordingEvents(): Observable<StartRecordingEvent> = startRecordingRelay
-
-  override fun stopRecordingEvents(): Observable<StopRecordingEvent> = stopRecordingRelay
 
   // Ideally we'd get this stuff out of the UI layer but it requires a Context so it's a bit more
   // convenient to do it here. We could refactor this method into a separate class if we wanted.
