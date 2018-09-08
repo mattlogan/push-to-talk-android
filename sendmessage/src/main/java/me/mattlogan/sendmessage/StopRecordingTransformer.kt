@@ -17,9 +17,7 @@ class StopRecordingTransformer @Inject constructor(private val audioRecorder: Au
 
     val sendAudio = upstream
         .map { audioRecorder.stopRecording() }
-        .flatMap { filePath ->
-          uploadClient.uploadFile(filePath).toObservable()
-        }
+        .flatMap { filePath -> uploadClient.uploadFile(filePath).toObservable() }
         .map { result ->
           when (result) {
             is UploadClient.Result.Success -> {
