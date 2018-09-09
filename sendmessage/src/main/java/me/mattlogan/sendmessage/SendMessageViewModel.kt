@@ -5,9 +5,12 @@ import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
+import javax.inject.Inject
 
-class SendMessageViewModel(startRecordingTransformer: StartRecordingTransformer,
-                           stopRecordingTransformer: StopRecordingTransformer) : ViewModel() {
+class SendMessageViewModel @Inject constructor(
+    startRecordingTransformer: StartRecordingTransformer,
+    stopRecordingTransformer: StopRecordingTransformer
+) : ViewModel() {
 
   val uiEvents = SendMessageUiEvents()
 

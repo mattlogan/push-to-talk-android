@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.util.Linkify
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -17,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.AndroidSupportInjection
+import me.mattlogan.uicommon.ViewModelFactory
 import java.io.File
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ class SendMessageFragment : Fragment() {
   private lateinit var pushToTalkButton: Button
   private lateinit var statusText: TextView
 
-  @Inject lateinit var viewModelFactory: SendMessageViewModelFactory
+  @Inject lateinit var viewModelFactory: ViewModelFactory
 
   private val recordAudioRequestCode = 1278
 
@@ -71,19 +71,15 @@ class SendMessageFragment : Fragment() {
     viewModel.state.observe(this, Observer<SendMessageUpdate> { event ->
       when (event) {
         is SendMessageUpdate.ShowError -> {
-          Log.d("debug_log", "show error")
           statusText.text = getString(R.string.generic_error)
         }
         is SendMessageUpdate.ShowRecording -> {
-          Log.d("debug_log", "show recording")
           statusText.text = getString(R.string.recording)
         }
         is SendMessageUpdate.ShowSending -> {
-          Log.d("debug_log", "show sending")
           statusText.text = getString(R.string.sending)
         }
         is SendMessageUpdate.ShowSent -> {
-          Log.d("debug_log", "show sent, url: ${event.fileUrl}")
           statusText.text = getString(R.string.message_sent, event.fileUrl)
           LinkifyCompat.addLinks(statusText, Linkify.ALL)
         }

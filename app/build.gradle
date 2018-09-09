@@ -44,6 +44,7 @@ dependencies {
     implementation project(':sendmessage')
     implementation project(':audio')
     implementation project(':upload')
+    implementation project(':uicommon')
 }
 
 apply plugin: 'com.google.gms.google-services'
