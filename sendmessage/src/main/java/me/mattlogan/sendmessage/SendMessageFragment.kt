@@ -68,7 +68,7 @@ class SendMessageFragment : Fragment() {
     // when they try to record.
     requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), recordAudioRequestCode)
 
-    viewModel.state.observe(this, Observer<SendMessageUpdate> { event ->
+    viewModel.state().observe(this, Observer<SendMessageUpdate> { event ->
       when (event) {
         is SendMessageUpdate.ShowError -> {
           statusText.text = getString(R.string.generic_error)
