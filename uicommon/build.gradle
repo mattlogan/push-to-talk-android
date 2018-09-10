@@ -19,4 +19,10 @@ dependencies {
 
     implementation "com.google.dagger:dagger:$versions.dagger"
     kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+
+    implementation "android.arch.lifecycle:viewmodel:$versions.viewmodel"
+    implementation "android.arch.lifecycle:extensions:$versions.viewmodel"
+    implementation "android.arch.lifecycle:reactivestreams:$versions.viewmodel"
 }
