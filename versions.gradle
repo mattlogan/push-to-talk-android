@@ -3,7 +3,7 @@ ext.versions = [
         targetSdkVersion   : 28,
         compileSdkVersion  : 28,
         kotlin             : '1.2.61',
-        androidGradlePlugin: '3.2.0-beta05',
+        androidGradlePlugin: '3.2.0-rc03',
         googleServices     : '3.2.0',
         appcompat          : '1.0.0-rc01',
         constraintLayout   : '1.1.2',
