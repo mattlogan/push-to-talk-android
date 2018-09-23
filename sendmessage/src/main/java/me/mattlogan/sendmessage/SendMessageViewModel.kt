@@ -25,7 +25,7 @@ class SendMessageViewModel @Inject constructor(
             .compose(startRecordingTransformer),
         uiEvents.stopRecording
             .compose(stopRecordingTransformer)
-    ).subscribe(mutableLiveData::postValue)
+    ).subscribe(mutableLiveData::setValue)
   }
 
   override fun onCleared() {
