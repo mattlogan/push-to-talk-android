@@ -1,7 +1,6 @@
 package me.mattlogan.upload
 
 import android.net.Uri
-import android.os.Handler
 import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Single
@@ -19,32 +18,26 @@ interface UploadClient {
 
 class RealUploadClient @Inject constructor() : UploadClient {
   override fun uploadFile(path: String): Single<UploadClient.Result> {
-    return Single.create { emitter ->
-      Handler().postDelayed({
-        emitter.onSuccess(UploadClient.Result.Success("sup bro"))
-      }, 5_000)
-    }
+    val uri = Uri.fromFile(File(path))
+    val storageRef = FirebaseStorage.getInstance().reference.child(uri.lastPathSegment!!)
 
-//    val uri = Uri.fromFile(File(path))
-//    val storageRef = FirebaseStorage.getInstance().reference.child(uri.lastPathSegment!!)
-//
-//    return Single.create { emitter ->
-//      storageRef.putFile(uri)
-//          .continueWithTask { task ->
-//            if (!task.isSuccessful) {
-//              Log.d("debug_log", "task failed: ${task.exception}")
-//              throw task.exception!!
-//            }
-//
-//            return@continueWithTask storageRef.downloadUrl
-//          }
-//          .addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//              emitter.onSuccess(UploadClient.Result.Success(task.result.toString()))
-//            } else {
-//              emitter.onSuccess(UploadClient.Result.Error)
-//            }
-//          }
-//    }
+    return Single.create { emitter ->
+      storageRef.putFile(uri)
+          .continueWithTask { task ->
+            if (!task.isSuccessful) {
+              Log.d("debug_log", "task failed: ${task.exception}")
+              throw task.exception!!
+            }
+
+            return@continueWithTask storageRef.downloadUrl
+          }
+          .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+              emitter.onSuccess(UploadClient.Result.Success(task.result.toString()))
+            } else {
+              emitter.onSuccess(UploadClient.Result.Error)
+            }
+          }
+    }
   }
 }
